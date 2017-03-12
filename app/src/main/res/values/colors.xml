@@ -4,5 +4,18 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="black_overlay">#66000000</color>
+    <color name="black_overlay">#000000</color>
+    <color name="white_overlay">#ffffffff</color>
+
+    <color name="MainMenu_Button_MyLexicon_Background_Static">#2e43b7</color>
+    <color name="MainMenu_Button_MyLexicon_Background_Press">#6688ec</color>
+
+    <color name="MainMenu_Button_Nomination_Background_Static">#ff4081</color>
+    <color name="MainMenu_Button_Nomination_Background_Press">#e96f99</color>
+
+    <color name="MainMenu_Button_Music_BackGround_Static">#11ed50</color>
+    <color name="MainMenu_Button_Music_BackGround_Press">#82f4a2</color>
+
+    <color name="MainMenu_Button_Movie_Background_Static">#fae60d</color>
+    <color name="MainMenu_Button_Movie_Background_Press">#f9f091</color>
 </resources>

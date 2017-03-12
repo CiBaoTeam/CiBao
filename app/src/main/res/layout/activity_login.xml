@@ -9,4 +9,43 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.cibao.cibao.login.ActivityLogin">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/cn_Login_EditText_UserAccount_Hint"
+            android:ems="10"
+            android:id="@+id/Login_EditText_UserAccount"
+            android:layout_gravity="center_horizontal" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/cn_Login_EditText_UserPassword_Hint"
+            android:ems="10"
+            android:id="@+id/Login_EditText_UserPassword"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cn_Login_Button_Login_Text"
+            android:id="@+id/Login_Button_Login"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cn_Login_Button_Register_Text"
+            android:id="@+id/Login_Button_Register"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
 </RelativeLayout>
