@@ -32,7 +32,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.cibao.cibao.ActivityWelcome" />
         </activity>
-        <activity android:name=".login.ActivityLogin"></activity>
+        <activity android:name=".login.ActivityLogin" />
+        <activity android:name=".login.main_level.ActivityMainMenu" />
+        <activity
+            android:name=".login.main_level.function_setting.ActivityPreferenceSetting"
+            android:label="@string/title_activity_activity_preference_setting" />
+        <activity android:name=".login.main_level.function_my_lexicon.ActivityMyLexicon" />
+        <activity android:name=".login.main_level.function_my_lexicon.sub_function.ActivityAddWordToLexicon" />
+        <activity android:name=".login.main_level.function_my_lexicon.sub_function.ActivityGlossaryTest" />
+        <activity android:name=".login.main_level.function_my_lexicon.sub_function.glossary_test.ActivityTestChoiceQuestion" />
+        <activity android:name=".login.main_level.function_my_lexicon.sub_function.glossary_test.ActivityTestImageSelection"></activity>
     </application>
 
 </manifest>
