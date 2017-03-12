@@ -5,11 +5,6 @@ import android.os.Bundle;
 
 import com.example.cibao.cibao.R;
 
-/**
- * 屈彬
- * 2017/3/12
- * 个性化设置活动
- */
 public class ActivityPreferenceSetting extends AppCompatActivity {
 
     @Override
