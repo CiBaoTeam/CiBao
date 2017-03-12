@@ -24,19 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ActivityLogin"
-            android:label="@string/title_activity_activity_login"
-            android:parentActivityName=".ActivityWelcome">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.cibao.cibao.ActivityWelcome" />
-        </activity>
+
         <activity android:name=".login.ActivityLogin" />
         <activity android:name=".login.main_level.ActivityMainMenu" />
         <activity
             android:name=".login.main_level.function_setting.ActivityPreferenceSetting"
-            android:label="@string/title_activity_activity_preference_setting" />
+            android:label="@string/activity_preference_setting_title" />
         <activity android:name=".login.main_level.function_my_lexicon.ActivityMyLexicon" />
         <activity android:name=".login.main_level.function_my_lexicon.sub_function.ActivityAddWordToLexicon" />
         <activity android:name=".login.main_level.function_my_lexicon.sub_function.ActivityGlossaryTest" />

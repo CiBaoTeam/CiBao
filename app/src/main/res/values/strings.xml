@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CiBao</string>
+    <string name="activity_preference_setting_title">PreferenceSetting</string>
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
