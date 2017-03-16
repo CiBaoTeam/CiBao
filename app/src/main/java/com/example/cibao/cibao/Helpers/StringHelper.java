@@ -15,4 +15,14 @@ public class StringHelper {
     public static boolean isEqual(String str1, String str2){
         return str1.equals(str2);
     }
+
+    /**
+     * @show 判断某个字符串是否为空
+     * @param str 字符串
+     * @return 判断结果
+     */
+    public static boolean isNullOrEmpty(String str){
+        if(str==null)return true;
+        return str.isEmpty();
+    }
 }
