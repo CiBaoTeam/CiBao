@@ -130,7 +130,7 @@ public class ActivityWelcome extends AppCompatActivity {
     /**
      * @show 用于处理异步操作
      */
-    protected Handler intentHandler=new Handler(){
+    protected Handler intentHandler = new Handler(){
         @Override
         public void handleMessage(Message msg){
             navigateToActivityLogin();
