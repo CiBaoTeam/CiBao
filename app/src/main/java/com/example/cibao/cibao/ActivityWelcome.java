@@ -1,12 +1,17 @@
 package com.example.cibao.cibao;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.example.cibao.cibao.login.main_level.ActivityLogin;
 
 /**
  * 屈彬
@@ -109,8 +114,45 @@ public class ActivityWelcome extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        // 延时并自动进入欢迎界面
+        new ThreadNavigate().start();
     }
 
+    /**
+     * @show 自动进入到登录活动
+     */
+    protected void navigateToActivityLogin(){
+
+        Intent intent = new Intent(this, ActivityLogin.class);
+        startActivity(intent);
+        finish();
+    }
+    /**
+     * @show 用于处理异步操作
+     */
+    protected Handler intentHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            navigateToActivityLogin();
+        }
+    };
+
+    /**
+     * @show 延时进程
+     */
+    protected class ThreadNavigate extends Thread{
+        @Override
+        public void run(){
+            try {
+                Thread.sleep(5000);
+            }catch (Exception e){
+                Log.d("navigate fail", "navigateToActivityLogin: Thread.sleep() Exception");
+            }
+            Message msg = new Message();
+            msg.what = 0;
+            intentHandler.sendMessage(msg);
+        }
+    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
