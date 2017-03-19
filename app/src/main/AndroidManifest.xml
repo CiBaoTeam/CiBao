@@ -13,17 +13,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".ActivityWelcome"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:theme="@style/FullscreenTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".login.main_level.ActivityMainMenu" />
         <activity android:name=".login.main_level.function_my_lexicon.ActivityMyLexicon" />
         <activity android:name=".login.main_level.function_my_lexicon.sub_function.ActivityAddWordToLexicon" />
@@ -31,7 +20,14 @@
         <activity android:name=".login.main_level.function_my_lexicon.sub_function.glossary_test.ActivityTestChoiceQuestion" />
         <activity android:name=".login.main_level.function_my_lexicon.sub_function.glossary_test.ActivityTestImageSelection" />
         <activity android:name=".login.main_level.function_setting.ActivityPreferenceSetting" />
-        <activity android:name=".login.main_level.ActivityLogin"></activity>
+        <activity android:name=".login.main_level.ActivityLogin" />
+        <activity android:name=".ActivityWelcome">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

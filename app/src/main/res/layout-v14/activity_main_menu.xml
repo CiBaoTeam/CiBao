@@ -29,8 +29,10 @@
                 android:layout_gravity="center_horizontal">
 
                 <Button
-                    android:layout_width="172dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="172dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
                     android:text="@string/cn_MainMenu_Button_Block_MyLexicon"
                     android:textSize="24dp"
                     android:background="@color/MainMenu_Button_MyLexicon_Background_Static"
@@ -38,9 +40,10 @@
                     android:id="@+id/MainMenu_Button_Block_MyLexicon" />
 
                 <Button
-                    android:layout_marginLeft="@dimen/activity_vertical_margin"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:text="每日一句"
                     android:textSize="24dp"
                     android:background="@color/MainMenu_Button_Nomination_Background_Static"
@@ -57,8 +60,10 @@
                 android:layout_gravity="center_horizontal">
 
                 <Button
-                    android:layout_width="172dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="172dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
                     android:text="英文歌曲"
                     android:textSize="24dp"
                     android:background="@color/MainMenu_Button_Music_BackGround_Static"
@@ -66,9 +71,10 @@
                     android:id="@+id/MainMenu_Button_Block_Music" />
 
                 <Button
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:text="英文电影"
                     android:textSize="24dp"
                     android:background="@color/MainMenu_Button_Movie_Background_Static"
