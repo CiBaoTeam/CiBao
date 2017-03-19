@@ -52,7 +52,7 @@ public class ActivityWelcome extends AppCompatActivity {
         @Override
         public void run(){
             try {
-                Thread.sleep(5000);
+                Thread.sleep(2000);
             }catch (Exception e){
                 Log.d("navigate fail", "navigateToActivityLogin: Thread.sleep() Exception");
             }
