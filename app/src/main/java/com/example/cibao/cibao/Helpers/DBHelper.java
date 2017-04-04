@@ -6,4 +6,8 @@ package com.example.cibao.cibao.Helpers;
  * 数据库辅助类
  */
 public class DBHelper {
+    /**
+     * @show 数据库名
+     */
+    public static String DATA_BASE_NAME = "CiBao_db";
 }
