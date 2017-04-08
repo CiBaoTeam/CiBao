@@ -59,13 +59,6 @@ public class Word {
     public String getUserID(){return UserID;}
 
     /**
-     * @show 属于哪一个词库
-     */
-    @DatabaseField(columnName = "LEXICON_NAME")
-    String LexiconBelonged;
-    public void setLexiconBelonged(String LexiconBelonged){this.LexiconBelonged = LexiconBelonged;}
-    public String getLexiconBelonged(){return LexiconBelonged;}
-    /**
      * @show 空构造函数
      */
     public Word(){}
