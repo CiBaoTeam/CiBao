@@ -44,7 +44,11 @@ public class DBHelper  extends OrmLiteSqliteOpenHelper {
         setDBClass(DBClass);
     }
 
-
+    /**
+     * @show 表创建
+     * @param sqLiteDatabase 数据库
+     * @param connectionSource 链接源
+     */
     public void onCreate(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource) {
         try {
             Log.i(DBHelper.class.getName(), "onCreate");
