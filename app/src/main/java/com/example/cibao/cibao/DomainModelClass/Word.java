@@ -25,7 +25,7 @@ public class Word {
     public void setMeaning(String Meaning){this.Meaning = Meaning;}
     public String getMeaning(){return Meaning;}
     /**
-     * @show 发信
+     * @show 发音
      */
     @DatabaseField
     String Pronunciation;
