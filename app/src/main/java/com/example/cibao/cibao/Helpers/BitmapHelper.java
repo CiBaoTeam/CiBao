@@ -1,7 +1,7 @@
 package com.example.cibao.cibao.Helpers;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
+
 import android.graphics.Matrix;
 
 /**
@@ -26,22 +26,17 @@ public class BitmapHelper {
          * @return 新图片
          */
         public static Bitmap resizeImage(Bitmap bitmap, int w, int h) {
-            Bitmap BitmapOrg = bitmap;
-            int width = BitmapOrg.getWidth();
-            int height = BitmapOrg.getHeight();
-            int newWidth = w;
-            int newHeight = h;
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
 
-            float scaleWidth = ((float) newWidth) / width;
-            float scaleHeight = ((float) newHeight) / height;
+            float scaleWidth = ((float) w) / width;
+            float scaleHeight = ((float) h) / height;
 
             Matrix matrix = new Matrix();
             matrix.postScale(scaleWidth, scaleHeight);
-            // if you want to rotate the Bitmap
-            // matrix.postRotate(45);
-            Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0, width,
+
+            return Bitmap.createBitmap(bitmap, 0, 0, width,
                     height, matrix, true);
-            return resizedBitmap;
         }
     }
 }

@@ -5,7 +5,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.cibao.cibao.DomainModelClass.Word;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -19,8 +22,15 @@ public class DBHelper  extends OrmLiteSqliteOpenHelper {
      * @show 数据库名
      */
     public static final String DATA_BASE_NAME = "db_CiBao";
+    /**
+     * @show 数据库版本
+     */
     public static final int DATA_BASE_VERSION = 1;
-
+    // 单词表名
+    /**
+     * @show 默认单词表名
+     */
+    public static final String DEFAULT_LEXICON_TABLE_NAME = "myLexicon";
     /**
      * @show 存储类型
      */
@@ -33,6 +43,12 @@ public class DBHelper  extends OrmLiteSqliteOpenHelper {
     public void setDBClass(Class DBClass){
         this.DBClass = DBClass;
     }
+
+    /**
+     * @show 获取数据库存储类型
+     * @return 存储类型
+     */
+    public Class getDBClass(){return DBClass;}
 
     /**
      * @show 构造函数
@@ -63,7 +79,13 @@ public class DBHelper  extends OrmLiteSqliteOpenHelper {
         }
     }
 
-
+    /**
+     * @show 表更新
+     * @param sqLiteDatabase 数据库
+     * @param connectionSource 链接源
+     * @param i1
+     * @param i2
+     */
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource, int i1, int i2) {
         try {
             Log.i(DBHelper.class.getName(), "onUpgrade");
@@ -78,5 +100,34 @@ public class DBHelper  extends OrmLiteSqliteOpenHelper {
             Log.e(DBHelper.class.getName(), "Can't drop databases", e);
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * @show 单词刀
+     */
+    protected Dao<Word, Integer> DaoWord = null;
+
+    /**
+     * @show 获取单词刀
+     * @return 单词刀
+     * @throws java.sql.SQLException
+     */
+    public Dao<Word, Integer> getDaoWord() throws java.sql.SQLException{
+        if(DaoWord == null)DaoWord = getDao(Word.class);
+        return DaoWord;
+    }
+
+    /**
+     * @show 词表名刀
+     */
+    protected Dao<String, Integer> DaoLexiconTable = null;
+    /**
+     * @show 获取单词刀
+     * @return 词表名刀
+     * @throws java.sql.SQLException
+     */
+    public Dao<String, Integer> getDaoLexiconTable() throws java.sql.SQLException{
+        if(DaoLexiconTable == null)DaoLexiconTable = getDao(String.class);
+        return DaoLexiconTable;
     }
 }

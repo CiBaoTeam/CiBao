@@ -7,21 +7,14 @@ import com.example.cibao.cibao.R;
 
 /**
  * 屈彬
- * 2017/3/12
- * 添加单词到词库
+ * 2017/4/6
+ * 单词浏览列表
  */
-public class ActivityAddWordToLexicon extends AppCompatActivity {
+public class ActivityLexiconTable extends AppCompatActivity {
 
-    /**
-     * @show 词库名
-     */
-    protected String LexiconTableName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_word_to_lexicon);
-    }
-    protected void initializeGlobalVar(){
-        
+        setContentView(R.layout.activity_lexicon_table);
     }
 }
