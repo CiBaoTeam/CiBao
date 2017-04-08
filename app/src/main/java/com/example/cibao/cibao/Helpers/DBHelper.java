@@ -5,6 +5,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.cibao.cibao.DomainModelClass.Lexicon;
 import com.example.cibao.cibao.DomainModelClass.Word;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 
@@ -30,7 +31,11 @@ public class DBHelper  extends OrmLiteSqliteOpenHelper {
     /**
      * @show 默认单词表名
      */
-    public static final String DEFAULT_LEXICON_TABLE_NAME = "myLexicon";
+    public static final String DEFAULT_LEXICON_TABLE_NAME = "我的词库";
+    /**
+     * @show 默认词典描述
+     */
+    public static final String DEFAULT_LEXICON_DESCRIPTION = "这是一个默认词库";
     /**
      * @show 存储类型
      */
@@ -118,16 +123,16 @@ public class DBHelper  extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * @show 词表名刀
+     * @show 词表刀
      */
-    protected Dao<String, Integer> DaoLexiconTable = null;
+    protected Dao<Lexicon, Integer> DaoLexiconTable = null;
     /**
      * @show 获取单词刀
      * @return 词表名刀
      * @throws java.sql.SQLException
      */
-    public Dao<String, Integer> getDaoLexiconTable() throws java.sql.SQLException{
-        if(DaoLexiconTable == null)DaoLexiconTable = getDao(String.class);
+    public Dao<Lexicon, Integer> getDaoLexiconTable() throws java.sql.SQLException{
+        if(DaoLexiconTable == null)DaoLexiconTable = getDao(Lexicon.class);
         return DaoLexiconTable;
     }
 }
