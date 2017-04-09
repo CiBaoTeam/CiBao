@@ -113,10 +113,12 @@ public class ActivityMyLexicon extends AppCompatActivity {
      */
     void initializeListItems(){
         ListItems = new ArrayList<HashMap<String, Object>>();
+        /*
         HashMap<String, Object> firstItemMap = new HashMap<String, Object>();
         firstItemMap.put(LAYOUT_KEY_LEXICON_NAME, DBHelper.DEFAULT_LEXICON_TABLE_NAME);
         firstItemMap.put(LAYOUT_KEY_DESCRIPTION, DBHelper.DEFAULT_LEXICON_DESCRIPTION);
         ListItems.add(firstItemMap);
+        */
         // 从数据库词典表中遍历获取表名
         if(DaoLexicon == null) {
             Toast.makeText(this, "数据库初始化失败!", Toast.LENGTH_LONG).show();
