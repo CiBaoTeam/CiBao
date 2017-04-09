@@ -13,9 +13,23 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "TABLE_WORD")
 public class Word {
     /**
+     * @show 单词编号
+     */
+    @DatabaseField(generatedId = true, columnName = "WORD_ID")
+    int ID;
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    /**
      * 单词本身
      */
-    @DatabaseField(id = true, columnName = "SPELLING")
+    @DatabaseField(index = true, columnName = "SPELLING")
     String Spelling;
     public void setSpelling(String Spelling){this.Spelling = Spelling;}
     public String getSpelling(){return Spelling;}

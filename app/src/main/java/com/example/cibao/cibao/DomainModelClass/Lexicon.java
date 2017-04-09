@@ -11,9 +11,17 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "TABLE_LEXICON")
 public class Lexicon {
     /**
+     * @show 词库编号
+     */
+    @DatabaseField(generatedId = true, columnName = "LEXICON_ID")
+    protected int ID;
+
+    public void setID(int ID){this.ID = ID;}
+    public int getID(){return ID;}
+    /**
      * @show 词典名
      */
-    @DatabaseField(id = true, columnName = "LEXICON_NAME")
+    @DatabaseField(columnName = "LEXICON_NAME", index = true)
     protected String Name;
 
     /**
@@ -52,7 +60,7 @@ public class Lexicon {
 
     /**
      * @show 带参数构造函数
-     * @param Name 名称
+     * @param ID ID
      */
-    public Lexicon(String Name){this.Name = Name;}
+    public Lexicon(int ID){this.ID = ID;}
 }

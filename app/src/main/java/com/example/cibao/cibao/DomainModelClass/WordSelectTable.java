@@ -18,20 +18,20 @@ public class WordSelectTable {
     public void setId(long Id){this.Id = Id;}
     public long getId(){return Id;}
     /**
-     * @show 词典名
+     * @show 词典编号
      */
-    @DatabaseField(columnName = "LEXICON_NAME")
-    protected String LexiconName;
-    public void setLexiconName(String LexiconName){this.LexiconName = LexiconName;}
-    public String getLexiconName(){return LexiconName;}
+    @DatabaseField(columnName = "LEXICON_ID")
+    protected int LexiconID;
+    public void setLexiconName(int LexiconID){this.LexiconID = LexiconID;}
+    public int getLexiconName(){return LexiconID;}
 
     /**
-     * @show 单词名
+     * @show 单词编号
      */
-    @DatabaseField(columnName = "SPELLING")
-    protected String WordSelling;
-    public void setWordSelling(String WordSelling){this.WordSelling = WordSelling;}
-    public String getWordSelling(){return  WordSelling;}
+    @DatabaseField(columnName = "WORD_ID")
+    protected int WordID;
+    public void setWordSelling(int WordID){this.WordID = WordID;}
+    public int getWordSelling(){return  WordID;}
 
     /**
      * @show 空构造函数
