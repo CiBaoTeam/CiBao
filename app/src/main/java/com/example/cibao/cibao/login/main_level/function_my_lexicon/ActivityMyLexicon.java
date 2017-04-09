@@ -25,6 +25,7 @@ import com.example.cibao.cibao.R;
 import com.example.cibao.cibao.login.main_level.function_my_lexicon.sub_function.ActivityLexiconTable;
 import com.j256.ormlite.dao.Dao;
 
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +68,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
      */
     final String LAYOUT_KEY_DESCRIPTION = "DESCRIPTION";
     /**
-     * @show 词库编号
+     * @show 键-词库编号
      */
     final String KEY_LEXICON_ID = "LEXICON_ID";
     /**
@@ -194,7 +195,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
                 new AlertDialog.Builder(view.getContext())
                         .setTitle(ListItems.get(position).get(LAYOUT_KEY_LEXICON_NAME).toString())
-                        .setIcon(android.R.drawable.ic_dialog_map)
+                        .setIcon(android.R.drawable.ic_menu_edit)
                         .setItems(new String[]{"打开词库", "编辑词库", "删除词库"}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -214,7 +215,11 @@ public class ActivityMyLexicon extends AppCompatActivity {
                                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
-                                                        deleteLexicon(ListItems.get(position).get(LAYOUT_KEY_LEXICON_NAME).toString());
+                                                        Lexicon lexicon = new Lexicon();
+                                                        lexicon.setID(Integer.parseInt(ListItems.get(position).get(KEY_LEXICON_ID).toString()));
+                                                        lexicon.setName(ListItems.get(position).get(LAYOUT_KEY_LEXICON_NAME).toString());
+                                                        lexicon.setDescription(ListItems.get(position).get(LAYOUT_KEY_DESCRIPTION).toString());
+                                                        deleteLexicon(lexicon);
                                                         // 刷新界面
                                                         addItemToList();
                                                     }
@@ -263,11 +268,29 @@ public class ActivityMyLexicon extends AppCompatActivity {
      */
     public boolean onCreateOptionsMenu(Menu menu){
         super.onCreateOptionsMenu(menu);
-        menu.add(0, MENU_ITEM_0, 0, "添加").setIcon(android.R.drawable.ic_menu_add);
+        setIconEnable(menu, true);
+        menu.add(0, MENU_ITEM_0, 0, "添加词库").setIcon(android.R.drawable.ic_menu_add);
         // menu.add(0, MENU_ITEM_1, 0, "删除").setIcon(android.R.drawable.ic_menu_delete);
         return true;
     }
 
+    /**
+     * @show 设置菜单图标可显示性
+     * @param menu 菜单
+     * @param enable 是否可显示
+     */
+    private void setIconEnable(Menu menu, boolean enable){
+        try{
+            Class<?> clazz = Class.forName("com.android.internal.view.menu.MenuBuilder");
+            Method m = clazz.getDeclaredMethod("setOptionalIconsVisible", boolean.class);
+            m.setAccessible(true);
+
+            //MenuBuilder实现Menu接口，创建菜单时，传进来的menu其实就是MenuBuilder对象(java的多态特征)
+            m.invoke(menu, enable);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+    }
     /**
      * @show 菜单项点击事件
      * @param item 菜单项
@@ -389,20 +412,16 @@ public class ActivityMyLexicon extends AppCompatActivity {
 
     /**
      * @show 删除词库
-     * @param lexiconId 词库名
+     * @param lexicon 词库
      */
-    void deleteLexicon(String lexiconId){
-        if(lexiconId == null) return;
-        if(StringHelper.isNullOrEmpty(lexiconId)){
-            Toast.makeText(this, "词库名不能为空!", Toast.LENGTH_LONG).show();
-            return;
-        }
+    void deleteLexicon(Lexicon lexicon){
+        if(lexicon == null)return;
         if(DaoLexicon == null){
             Toast.makeText(this, "数据库访问失败!", Toast.LENGTH_LONG).show();
             return;
         }
         try{
-            DaoLexicon.deleteById(lexiconId);
+            DaoLexicon.delete(lexicon);
             Toast.makeText(this, "删除成功!", Toast.LENGTH_LONG).show();
         }catch (SQLException sqlE){
             Log.e("createNewLexicon()", sqlE.toString());

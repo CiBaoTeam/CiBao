@@ -8,6 +8,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/MyLexicon_EditText_LexiconName"
         android:hint="词库名"
+        android:background="@android:drawable/alert_light_frame"
+        android:textColor="@color/black_overlay"
         android:layout_gravity="center_horizontal" />
 
     <EditText
@@ -15,5 +17,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/MyLexicon_EditText_Description"
         android:hint="描述"
+        android:background="@android:drawable/alert_light_frame"
+        android:textColor="@color/black_overlay"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
