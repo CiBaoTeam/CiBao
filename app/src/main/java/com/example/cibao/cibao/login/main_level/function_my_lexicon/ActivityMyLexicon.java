@@ -1,13 +1,12 @@
 package com.example.cibao.cibao.login.main_level.function_my_lexicon;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -113,7 +112,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
      */
     void initializeWidget(){
         ListViewMain = (ListView)findViewById(R.id.MyLexicon_ListView_Dictionary);
-        addItemToList();
+        refreshList();
         ListViewMain.setAdapter(ListAdapter);
         setMainItemClickListener();
         ListViewMain.setOnItemClickListener(MainItemClickListener);
@@ -124,7 +123,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
     /**
      * @show 刷新列表项
      */
-    void addItemToList(){
+    void refreshList(){
         if(ListItems != null)ListItems.clear();
         initializeListAdapter();
         ListViewMain.setAdapter(ListAdapter);
@@ -221,7 +220,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
                                                         lexicon.setDescription(ListItems.get(position).get(LAYOUT_KEY_DESCRIPTION).toString());
                                                         deleteLexicon(lexicon);
                                                         // 刷新界面
-                                                        addItemToList();
+                                                        refreshList();
                                                     }
                                                 })
                                                 .show();
@@ -376,7 +375,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
             Log.e("editLexicon()", sqlE.toString());
         }
         // 刷新界面
-        addItemToList();
+        refreshList();
     }
     /**
      * @show 创建新的词库
@@ -407,7 +406,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
             Log.e("createNewLexicon()", sqlE.toString());
         }
         // 刷新界面
-        addItemToList();
+        refreshList();
     }
 
     /**
@@ -427,6 +426,6 @@ public class ActivityMyLexicon extends AppCompatActivity {
             Log.e("createNewLexicon()", sqlE.toString());
         }
         // 刷新界面
-        addItemToList();
+        refreshList();
     }
 }
