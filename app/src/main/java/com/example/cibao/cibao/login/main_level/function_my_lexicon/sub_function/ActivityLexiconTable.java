@@ -1,6 +1,5 @@
 package com.example.cibao.cibao.login.main_level.function_my_lexicon.sub_function;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.cibao.cibao.R;

@@ -5,8 +5,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.cibao.cibao.DomainModelClass.Lexicon;
-import com.example.cibao.cibao.DomainModelClass.Word;
+
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 
 import com.j256.ormlite.dao.Dao;
@@ -27,13 +26,25 @@ public class DBHelper  extends OrmLiteSqliteOpenHelper {
      * @show 数据库版本
      */
     public static final int DATA_BASE_VERSION = 1;
-    // 单词表名
     /**
-     * @show 默认单词表名
+     * @show 单词表名
+     */
+    public static final String TABLE_WORD = "TABLE_WORD";
+    /**
+     * @show 词库表名
+     */
+    public static final String TABLE_LEXICON = "TABLE_LEXICON";
+    /**
+     * @show 选词表名
+     */
+    public static final String TABLE_WORD_SELECT = "TABLE_WORD_SELECT";
+    // 词库名
+    /**
+     * @show 默认词库名
      */
     public static final String DEFAULT_LEXICON_TABLE_NAME = "我的词库";
     /**
-     * @show 默认词典描述
+     * @show 默认词库描述
      */
     public static final String DEFAULT_LEXICON_DESCRIPTION = "这是一个默认词库";
     /**
@@ -108,31 +119,11 @@ public class DBHelper  extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * @show 单词刀
-     */
-    protected Dao<Word, Integer> DaoWord = null;
-
-    /**
-     * @show 获取单词刀
-     * @return 单词刀
+     * @show 创建刀
+     * @return 刀
      * @throws java.sql.SQLException
      */
-    public Dao<Word, Integer> getDaoWord() throws java.sql.SQLException{
-        if(DaoWord == null)DaoWord = getDao(Word.class);
-        return DaoWord;
-    }
-
-    /**
-     * @show 词表刀
-     */
-    protected Dao<Lexicon, Integer> DaoLexiconTable = null;
-    /**
-     * @show 获取单词刀
-     * @return 词表名刀
-     * @throws java.sql.SQLException
-     */
-    public Dao<Lexicon, Integer> getDaoLexiconTable() throws java.sql.SQLException{
-        if(DaoLexiconTable == null)DaoLexiconTable = getDao(Lexicon.class);
-        return DaoLexiconTable;
-    }
+   public Dao createDao(Class c) throws java.sql.SQLException{
+       return getDao(c);
+   }
 }
