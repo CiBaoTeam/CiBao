@@ -85,7 +85,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
     /**
      * @show 数据库操作助手
      */
-    protected DBHelper MainDBHelper;
+    DBHelper MainDBHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

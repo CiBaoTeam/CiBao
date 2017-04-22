@@ -22,16 +22,16 @@ public class WordSelectTable {
      */
     @DatabaseField(columnName = "LEXICON_ID")
     protected int LexiconID;
-    public void setLexiconName(int LexiconID){this.LexiconID = LexiconID;}
-    public int getLexiconName(){return LexiconID;}
+    public void setLexiconID(int LexiconID){this.LexiconID = LexiconID;}
+    public int getLexiconID(){return LexiconID;}
 
     /**
      * @show 单词编号
      */
     @DatabaseField(columnName = "WORD_ID")
     protected int WordID;
-    public void setWordSelling(int WordID){this.WordID = WordID;}
-    public int getWordSelling(){return  WordID;}
+    public void setWordID(int WordID){this.WordID = WordID;}
+    public int getWordID(){return  WordID;}
 
     /**
      * @show 空构造函数

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.cibao.cibao.DomainModelClass.Word;
 import com.example.cibao.cibao.DomainModelClass.WordSelectTable;
@@ -15,6 +16,10 @@ import com.example.cibao.cibao.login.main_level.function_my_lexicon.ActivityMyLe
 import com.j256.ormlite.dao.Dao;
 
 import java.lang.reflect.Method;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 屈彬
@@ -24,6 +29,14 @@ import java.lang.reflect.Method;
  */
 public class ActivityLexiconTable extends ActivityMyLexicon {
 
+    /**
+     * @show 单词数据库助手
+     */
+    DBHelper WordHelper;
+    /**
+     * @show 选词数据库助手
+     */
+    DBHelper WordSelectHelper;
     /**
      * @show 单词刀
      */
@@ -43,11 +56,20 @@ public class ActivityLexiconTable extends ActivityMyLexicon {
 
         initializeParam();
         initializeWidget();
+        initializeDatabases();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(WordHelper != null)WordHelper.close();
+        if(WordSelectHelper != null)WordSelectHelper.close();
+        try{
+            DaoWord.closeLastIterator();
+            DaoSelectTable.closeLastIterator();
+        }catch (SQLException sqlE){
+            Log.e("onDestroy()", sqlE.toString());
+        }
     }
 
     /**
@@ -69,13 +91,69 @@ public class ActivityLexiconTable extends ActivityMyLexicon {
         ListViewMain = (ListView) findViewById(R.id.LexiconTable_ListView_WordList);
         refreshList();
     }
+
+    /**
+     * @show 初始化数据库
+     */
+    void initializeDatabases(){
+        WordHelper = new DBHelper(this, Word.class);
+        WordSelectHelper = new DBHelper(this, WordSelectTable.class);
+        try{
+            DaoWord = WordHelper.createDao(Word.class);
+            DaoSelectTable = WordSelectHelper.createDao(WordSelectTable.class);
+        }catch (SQLException sqlE){
+        Log.e("initializeDatabases()", sqlE.toString());
+    }
+    }
     /**
      * @show 刷新列表
      */
     void refreshList(){
-
+        if(ListItems != null)ListItems.clear();
+        initializeListAdapter();
+        ListViewMain.setAdapter(ListAdapter);
     }
 
+    /**
+     * @show 初始化列表项
+     */
+    void initializeListItem(){
+        // 从数据库中获取单词
+        ListItems = new ArrayList<>();
+        // 用词库ID筛选
+        if(DaoSelectTable == null || DaoWord == null){
+            Toast.makeText(this, "数据库初始化失败!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        List<WordSelectTable> WordSelectList = null;
+        List<Word> WordList = null;// 词库包含的单词的ID
+        try{
+            WordSelectList = DaoSelectTable.queryForEq("LEXICON_ID", ParentLexiconID);
+        }catch (SQLException sqlE){
+            Log.e(" initializeListItems()", sqlE.toString());
+        }
+        if(WordSelectList == null){
+            Toast.makeText(this, "选词表获取失败!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        // 初始化单词列表
+        WordList = new LinkedList<>();
+        try{
+            for (WordSelectTable wst:
+                    WordSelectList) {
+                WordList.add(DaoWord.queryForId(wst.getWordID() + ""));
+            }
+        }catch (SQLException sqlE){
+            Log.e(" initializeListItems()", sqlE.toString());
+        }
+
+    }
+    /**
+     * @show 初始化列表适配器
+     */
+    void initializeListAdapter(){
+        initializeListItem();
+    }
     /**
      * @show 创建选项菜单
      * @param menu 菜单
