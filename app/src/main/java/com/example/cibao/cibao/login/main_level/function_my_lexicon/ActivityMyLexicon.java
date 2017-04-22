@@ -73,7 +73,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
     /**
      * @show 菜单第0个项
      */
-    final int MENU_ITEM_0 = Menu.FIRST;
+    protected final int MENU_ITEM_0 = Menu.FIRST;
     /**
      * @show 菜单项第1项
      */
@@ -204,7 +204,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
                                         forwardToLexiconTableActivity(position);
                                         break;
                                     case 1:
-                                        createEditTextDialog(true, position);
+                                        createEditTextDialog(true, position, "添加或修改词库");
                                         break;
                                     case 2:
                                         new AlertDialog.Builder(view.getContext())
@@ -243,7 +243,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
         Intent LexiconTableIntent = new Intent();
         LexiconTableIntent.setClass(getApplicationContext(), ActivityLexiconTable.class);
         // 传送选中的词表名
-        LexiconTableIntent.putExtra(DBHelper.TABLE_LEXICON, ListItems.get(lexiconPosition).get(LAYOUT_KEY_LEXICON_NAME).toString());
+        LexiconTableIntent.putExtra(DBHelper.TABLE_LEXICON, ListItems.get(lexiconPosition).get(KEY_LEXICON_ID).toString());
         startActivity(LexiconTableIntent);
     }
     // 数据库
@@ -299,7 +299,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()){
             case MENU_ITEM_0:
-                createEditTextDialog(false, 0);
+                createEditTextDialog(false, 0, "添加或修改词库");
                 break;
         }
         return true;
@@ -311,7 +311,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
      * @show 创建文本输入对话框
      * @param editMode 是否是编辑模式
      */
-    void createEditTextDialog(final boolean editMode, final int position){
+    void createEditTextDialog(final boolean editMode, final int position, final String title){
 
         LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
         final View dialogLayout = layoutInflater.inflate(R.layout.layout_edit_lexicon, null);
@@ -322,7 +322,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
             lexiconDescription.setText(ListItems.get(position).get(LAYOUT_KEY_DESCRIPTION).toString());
         }
         new AlertDialog.Builder(this)
-                .setTitle("添加或修改词库")
+                .setTitle(title)
                 .setIcon(android.R.drawable.ic_input_add)
                 .setView(dialogLayout)
                 .setNegativeButton("取消", null)
