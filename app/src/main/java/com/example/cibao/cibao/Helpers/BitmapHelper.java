@@ -19,6 +19,10 @@ public class BitmapHelper {
     public static class BitmapMatrix {
 
         /**
+         * @show 单词图片统一尺寸
+         */
+        public static int BitmapSize = 100;
+        /**
          * @show 缩放图片
          * @param bitmap 位图
          * @param w 宽度

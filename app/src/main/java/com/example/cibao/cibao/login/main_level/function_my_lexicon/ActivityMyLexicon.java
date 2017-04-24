@@ -243,7 +243,7 @@ public class ActivityMyLexicon extends AppCompatActivity {
         Intent LexiconTableIntent = new Intent();
         LexiconTableIntent.setClass(getApplicationContext(), ActivityLexiconTable.class);
         // 传送选中的词表名
-        LexiconTableIntent.putExtra(DBHelper.TABLE_LEXICON, ListItems.get(lexiconPosition).get(KEY_LEXICON_ID).toString());
+        LexiconTableIntent.putExtra(DBHelper.TABLE_LEXICON, (int)ListItems.get(lexiconPosition).get(KEY_LEXICON_ID));
         startActivity(LexiconTableIntent);
     }
     // 数据库

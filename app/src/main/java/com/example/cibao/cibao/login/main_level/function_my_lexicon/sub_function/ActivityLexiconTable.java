@@ -2,10 +2,13 @@ package com.example.cibao.cibao.login.main_level.function_my_lexicon.sub_functio
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.cibao.cibao.DomainModelClass.Word;
@@ -18,6 +21,7 @@ import com.j256.ormlite.dao.Dao;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,8 +31,32 @@ import java.util.List;
  * 单词浏览列表
  * 继承于词典显示活动
  */
-public class ActivityLexiconTable extends ActivityMyLexicon {
+public class ActivityLexiconTable extends AppCompatActivity {
 
+    /**
+     * @show 主列表
+     */
+    protected ListView ListViewMain;
+    /**
+     * @show 列表项目
+     */
+    protected ArrayList<HashMap<String, Object>> ListItems;
+    /**
+     * @show 主列表的适配器
+     */
+    protected SimpleAdapter ListAdapter;
+    /**
+     * @show 项目点击监听
+     */
+    protected AdapterView.OnItemClickListener MainItemClickListener;
+    /**
+     * @show 项目长按事件
+     */
+    protected AdapterView.OnItemLongClickListener MainItemLongClickListener;
+    /**
+     * @show 菜单第0个项
+     */
+    protected final int MENU_ITEM_0 = Menu.FIRST;
     /**
      * @show 单词数据库助手
      */
@@ -55,20 +83,28 @@ public class ActivityLexiconTable extends ActivityMyLexicon {
         setContentView(R.layout.activity_lexicon_table);
 
         initializeParam();
-        initializeWidget();
         initializeDatabases();
+        initializeWidget();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(WordHelper != null)WordHelper.close();
-        if(WordSelectHelper != null)WordSelectHelper.close();
-        try{
-            DaoWord.closeLastIterator();
-            DaoSelectTable.closeLastIterator();
-        }catch (SQLException sqlE){
-            Log.e("onDestroy()", sqlE.toString());
+        if(WordHelper != null) {
+            WordHelper.close();
+            try{
+                if(DaoWord != null)DaoWord.closeLastIterator();
+            }catch (SQLException sqlE){
+                Log.e("onDestroy()", sqlE.toString());
+            }
+        }
+        if(WordSelectHelper != null) {
+            WordSelectHelper.close();
+            try{
+                if(DaoSelectTable != null)DaoSelectTable.closeLastIterator();
+            }catch (SQLException sqlE){
+                Log.e("onDestroy()", sqlE.toString());
+            }
         }
     }
 
@@ -79,7 +115,8 @@ public class ActivityLexiconTable extends ActivityMyLexicon {
         // 获取父活动的EXTRA
         Intent getLexiconID = getIntent();
         try{
-            ParentLexiconID = Integer.parseInt(getLexiconID.getStringExtra(DBHelper.TABLE_LEXICON));
+            ParentLexiconID = getLexiconID.getIntExtra(DBHelper.TABLE_LEXICON, 0);
+            Toast.makeText(getApplicationContext(), ParentLexiconID + "", Toast.LENGTH_LONG).show();
         }catch (Exception e){
             Log.e("initializeParam", e.toString());
         }
@@ -96,14 +133,14 @@ public class ActivityLexiconTable extends ActivityMyLexicon {
      * @show 初始化数据库
      */
     void initializeDatabases(){
-        WordHelper = new DBHelper(this, Word.class);
+        //WordHelper = new DBHelper(this, Word.class);
         WordSelectHelper = new DBHelper(this, WordSelectTable.class);
         try{
-            DaoWord = WordHelper.createDao(Word.class);
+            //DaoWord = WordHelper.createDao(Word.class);
             DaoSelectTable = WordSelectHelper.createDao(WordSelectTable.class);
         }catch (SQLException sqlE){
-        Log.e("initializeDatabases()", sqlE.toString());
-    }
+            Log.e("initializeDatabases()", sqlE.toString());
+        }
     }
     /**
      * @show 刷新列表
@@ -159,6 +196,7 @@ public class ActivityLexiconTable extends ActivityMyLexicon {
      * @param menu 菜单
      * @return 是否创建成功
      */
+    @Override
     public boolean onCreateOptionsMenu(Menu menu){
         super.onCreateOptionsMenu(menu);
         setIconEnable(menu, true);
@@ -193,17 +231,19 @@ public class ActivityLexiconTable extends ActivityMyLexicon {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()){
             case MENU_ITEM_0:
+                navigateToEditWord();
                 break;
         }
         return true;
     }
-
     /**
      * @show 跳转至编辑单词活动
      */
     void navigateToEditWord(){
         Intent intent = new Intent(this, ActivityAddWordToLexicon.class);
         // 发送当前词库
+        intent.putExtra(DBHelper.TABLE_LEXICON, ParentLexiconID);
+        intent.putExtra(ActivityAddWordToLexicon.EDIT_STATUS, false);
         this.startActivity(intent);
     }
 }

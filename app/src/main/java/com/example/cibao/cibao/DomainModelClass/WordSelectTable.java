@@ -13,14 +13,14 @@ public class WordSelectTable {
     /**
      * @show 行ID
      */
-    @DatabaseField(id = true, generatedId = true, columnName = "ID")
-    protected long Id;
-    public void setId(long Id){this.Id = Id;}
-    public long getId(){return Id;}
+    @DatabaseField(generatedId = true, columnName = "ID")
+    protected int Id;
+    public void setId(int Id){this.Id = Id;}
+    public int getId(){return Id;}
     /**
      * @show 词典编号
      */
-    @DatabaseField(columnName = "LEXICON_ID")
+    @DatabaseField(index = true, columnName = "LEXICON_ID")
     protected int LexiconID;
     public void setLexiconID(int LexiconID){this.LexiconID = LexiconID;}
     public int getLexiconID(){return LexiconID;}
@@ -42,5 +42,5 @@ public class WordSelectTable {
      * @show 带参数的构造函数
      * @param Id 行ID
      */
-    public WordSelectTable(long Id){this.Id = Id;}
+    public WordSelectTable(int Id){this.Id = Id;}
 }
