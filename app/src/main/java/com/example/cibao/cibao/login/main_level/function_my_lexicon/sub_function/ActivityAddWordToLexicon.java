@@ -212,9 +212,12 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "单词不能为空!", Toast.LENGTH_LONG).show();
             return;
         }
-        Word word = new Word(spelling);
+        Word word = new Word();
+        word.setSpelling(spelling);
         word.setMeaning(EditText_Meaning.getText().toString());
         word.setPhoneticSymbol(EditText_PhoneticSymbol.getText().toString());
+        word.setPronunciation("");
+        word.setUserID("");
         Bitmap bitmap;
         if(WordImage != null){
             bitmap = WordImage;
@@ -234,22 +237,24 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
                 word.setID(WordID);
                 DaoWord.update(word);
             }else {
-                if(DaoWord.queryForEq("SPELLING", word.getSpelling()).get(0) != null){
-                    Toast.makeText(getApplicationContext(), "该单词在数据库中已存在，不可重复添加!", Toast.LENGTH_LONG).show();
-                    return;
-                }
                 DaoWord.create(word);
                 // 更新选词表
                 WordSelectTable wst = new WordSelectTable();
                 wst.setLexiconID(ParentLexiconID);
-                word = DaoWord.queryForEq("SPELLING", word.getSpelling()).get(0);
-                wst.setWordID(word.getID());
+                Word temp = DaoWord.queryForEq("SPELLING", word.getSpelling()).get(0);
+                if(temp == null){
+                    Toast.makeText(getApplicationContext(), "word is null", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                wst.setWordID(temp.getID());
                 DaoSelectTable.create(wst);
             }
             Toast.makeText(getApplicationContext(), "添加成功!", Toast.LENGTH_LONG).show();
             finish();
         }catch (SQLException sqlE){
-            Toast.makeText(getApplicationContext(), "单词创建失败!", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "单词创建失败!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), sqlE.toString(), Toast.LENGTH_LONG).show();
+            EditText_PhoneticSymbol.setText(sqlE.toString());
             Log.e("confirm()", sqlE.toString());
         }
     }

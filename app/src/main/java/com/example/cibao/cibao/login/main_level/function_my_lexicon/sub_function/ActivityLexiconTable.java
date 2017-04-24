@@ -187,7 +187,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
             Log.e(" initializeListItems()", sqlE.toString());
         }
         if(WordSelectList == null){
-            Toast.makeText(this, "选词表获取失败!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "选词表为空!", Toast.LENGTH_LONG).show();
             return;
         }
         // 初始化单词列表

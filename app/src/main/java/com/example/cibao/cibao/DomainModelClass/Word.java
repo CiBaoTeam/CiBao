@@ -79,7 +79,7 @@ public class Word {
 
     /**
      * @show 带参数构造函数
-     * @param Spelling 单词本身
+     * @param ID 单词编号
      */
-    public Word(String Spelling){this.Spelling = Spelling;}
+    public Word(int ID){this.ID = ID;}
 }
