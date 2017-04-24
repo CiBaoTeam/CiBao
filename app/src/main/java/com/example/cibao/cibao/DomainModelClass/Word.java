@@ -29,7 +29,7 @@ public class Word {
     /**
      * 单词本身
      */
-    @DatabaseField(index = true, columnName = "SPELLING")
+    @DatabaseField(index = true, columnName = "SPELLING", unique = true)
     String Spelling;
     public void setSpelling(String Spelling){this.Spelling = Spelling;}
     public String getSpelling(){return Spelling;}

@@ -1,21 +1,26 @@
 package com.example.cibao.cibao.login.main_level.function_my_lexicon.sub_function;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+
 import com.example.cibao.cibao.DomainModelClass.Word;
 import com.example.cibao.cibao.DomainModelClass.WordSelectTable;
+import com.example.cibao.cibao.Helpers.Base64Helper;
+import com.example.cibao.cibao.Helpers.BitmapHelper;
 import com.example.cibao.cibao.Helpers.DBHelper;
 import com.example.cibao.cibao.R;
-import com.example.cibao.cibao.login.main_level.function_my_lexicon.ActivityMyLexicon;
 import com.j256.ormlite.dao.Dao;
 
 import java.lang.reflect.Method;
@@ -77,6 +82,18 @@ public class ActivityLexiconTable extends AppCompatActivity {
      * @show 父词库编号
      */
     int ParentLexiconID;
+    /**
+     * @show 布局键-单词拼写
+     */
+    final String LAYOUT_KEY_SPELLING = "SPELLING";
+    /**
+     * @show 布局键-单词解释
+     */
+    final String LAYOUT_KEY_MEANING = "MEANING";
+    /**
+     * @show 布局键-图片
+     */
+    final String LAYOUT_KEY_IMAGE="IMAGE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +133,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
         Intent getLexiconID = getIntent();
         try{
             ParentLexiconID = getLexiconID.getIntExtra(DBHelper.TABLE_LEXICON, 0);
-            Toast.makeText(getApplicationContext(), ParentLexiconID + "", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), ParentLexiconID + "", Toast.LENGTH_LONG).show();
         }catch (Exception e){
             Log.e("initializeParam", e.toString());
         }
@@ -126,17 +143,17 @@ public class ActivityLexiconTable extends AppCompatActivity {
      */
     void initializeWidget(){
         ListViewMain = (ListView) findViewById(R.id.LexiconTable_ListView_WordList);
-        refreshList();
+        refreshList(null);
     }
 
     /**
      * @show 初始化数据库
      */
     void initializeDatabases(){
-        //WordHelper = new DBHelper(this, Word.class);
+        WordHelper = new DBHelper(this, Word.class);
         WordSelectHelper = new DBHelper(this, WordSelectTable.class);
         try{
-            //DaoWord = WordHelper.createDao(Word.class);
+            DaoWord = WordHelper.createDao(Word.class);
             DaoSelectTable = WordSelectHelper.createDao(WordSelectTable.class);
         }catch (SQLException sqlE){
             Log.e("initializeDatabases()", sqlE.toString());
@@ -145,7 +162,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
     /**
      * @show 刷新列表
      */
-    void refreshList(){
+    void refreshList(View view){
         if(ListItems != null)ListItems.clear();
         initializeListAdapter();
         ListViewMain.setAdapter(ListAdapter);
@@ -178,18 +195,46 @@ public class ActivityLexiconTable extends AppCompatActivity {
         try{
             for (WordSelectTable wst:
                     WordSelectList) {
-                WordList.add(DaoWord.queryForId(wst.getWordID() + ""));
+                WordList.add(DaoWord.queryForEq("WORD_ID", wst.getWordID()).get(0));
             }
         }catch (SQLException sqlE){
             Log.e(" initializeListItems()", sqlE.toString());
         }
-
+        if(WordList == null)return;
+        // 单词表，添加单词项
+        for(Word word : WordList){
+            HashMap<String, Object> ItemMap = new HashMap<>();
+            ItemMap.put(LAYOUT_KEY_SPELLING, word.getSpelling());
+            ItemMap.put(LAYOUT_KEY_MEANING, word.getMeaning());
+            ItemMap.put(LAYOUT_KEY_IMAGE, BitmapHelper.BitmapMatrix.resizeImage(Base64Helper.getBitmapFromBase64Code(word.getPictureOfWord()),
+                    BitmapHelper.BitmapMatrix.BitmapSize, BitmapHelper.BitmapMatrix.BitmapSize));
+            ListItems.add(ItemMap);
+        }
     }
     /**
      * @show 初始化列表适配器
      */
     void initializeListAdapter(){
         initializeListItem();
+        if(ListItems == null)return;
+        ListAdapter = new SimpleAdapter(this, ListItems, R.layout.layout_word_item,
+                new String[]{LAYOUT_KEY_SPELLING, LAYOUT_KEY_MEANING, LAYOUT_KEY_IMAGE},
+                new int[]{R.id.LexiconTable_word_item_textView_spelling, R.id.LexiconTable_word_item_textView_meaning,
+                R.id.LexiconTable_word_item_imageView_image});
+        ListAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Object data, String textRepresentation) {
+                // TODO Auto-generated method stub
+                if((view instanceof ImageView) && (data instanceof Bitmap)) {
+                    ImageView imageView = (ImageView) view;
+                    Bitmap bmp = (Bitmap) data;
+                    imageView.setImageBitmap(bmp);
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
     /**
      * @show 创建选项菜单
@@ -231,7 +276,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()){
             case MENU_ITEM_0:
-                navigateToEditWord();
+                navigateToEditWord(0, false);
                 break;
         }
         return true;
@@ -239,11 +284,14 @@ public class ActivityLexiconTable extends AppCompatActivity {
     /**
      * @show 跳转至编辑单词活动
      */
-    void navigateToEditWord(){
+    void navigateToEditWord(int wordID, boolean isEditMode){
         Intent intent = new Intent(this, ActivityAddWordToLexicon.class);
         // 发送当前词库
         intent.putExtra(DBHelper.TABLE_LEXICON, ParentLexiconID);
-        intent.putExtra(ActivityAddWordToLexicon.EDIT_STATUS, false);
+        // 是否为编辑状态
+        intent.putExtra(ActivityAddWordToLexicon.EDIT_STATUS, isEditMode);
+        // 发送选中的单词ID
+        intent.putExtra(DBHelper.TABLE_WORD, wordID);
         this.startActivity(intent);
     }
 }
