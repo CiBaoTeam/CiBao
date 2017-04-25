@@ -206,8 +206,8 @@ public class ActivityLexiconTable extends AppCompatActivity {
             HashMap<String, Object> ItemMap = new HashMap<>();
             ItemMap.put(LAYOUT_KEY_SPELLING, word.getSpelling());
             ItemMap.put(LAYOUT_KEY_MEANING, word.getMeaning());
-            ItemMap.put(LAYOUT_KEY_IMAGE, BitmapHelper.BitmapMatrix.resizeImage(Base64Helper.getBitmapFromBase64Code(word.getPictureOfWord()),
-                    BitmapHelper.BitmapMatrix.BitmapSize, BitmapHelper.BitmapMatrix.BitmapSize));
+            //ItemMap.put(LAYOUT_KEY_IMAGE, BitmapHelper.BitmapMatrix.resizeImage(Base64Helper.getBitmapFromBase64Code(word.getPictureOfWord()),
+                    //BitmapHelper.BitmapMatrix.BitmapSize, BitmapHelper.BitmapMatrix.BitmapSize));
             ListItems.add(ItemMap);
         }
     }

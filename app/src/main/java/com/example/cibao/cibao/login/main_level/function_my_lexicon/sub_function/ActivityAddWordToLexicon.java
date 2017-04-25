@@ -181,8 +181,8 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
             Word word = DaoWord.queryForEq("WORD_ID", WordID).get(0);
             EditText_Spelling.setText(word.getSpelling());
             EditText_Meaning.setText(word.getMeaning());
-            EditText_PhoneticSymbol.setText(word.getPhoneticSymbol());
-            ImageButton_AddImage.setImageBitmap(Base64Helper.getBitmapFromBase64Code(word.getPictureOfWord()));
+            //EditText_PhoneticSymbol.setText(word.getPhoneticSymbol());
+            //ImageButton_AddImage.setImageBitmap(Base64Helper.getBitmapFromBase64Code(word.getPictureOfWord()));
         }catch (SQLException sqlE){
             Log.e("loadWordInfo()", sqlE.toString());
         }
@@ -215,9 +215,8 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
         Word word = new Word();
         word.setSpelling(spelling);
         word.setMeaning(EditText_Meaning.getText().toString());
-        word.setPhoneticSymbol(EditText_PhoneticSymbol.getText().toString());
-        word.setPronunciation("");
-        word.setUserID("");
+        //word.setPhoneticSymbol(EditText_PhoneticSymbol.getText().toString());
+       // word.setPronunciation("");
         Bitmap bitmap;
         if(WordImage != null){
             bitmap = WordImage;
@@ -226,7 +225,7 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
             bitmap = BitmapHelper.BitmapMatrix.resizeImage(bitmap, BitmapHelper.BitmapMatrix.BitmapSize, BitmapHelper.BitmapMatrix.BitmapSize);
         }
         WordImageSerial = Base64Helper.getBase64CodeFromBitmap(bitmap);
-        word.setPictureOfWord(WordImageSerial);
+        //word.setPictureOfWord(WordImageSerial);
         // 保存到数据库
         if(DaoWord == null || DaoSelectTable == null){
             Toast.makeText(getApplicationContext(), "数据库访问失败!", Toast.LENGTH_LONG).show();
@@ -234,20 +233,23 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
         }
         try{
             if(isEditMode){
-                word.setID(WordID);
+                Toast.makeText(getApplicationContext(), "editmode", Toast.LENGTH_LONG).show();
+                //word.setID(WordID);
                 DaoWord.update(word);
+
             }else {
+                Toast.makeText(getApplicationContext(), "create mode", Toast.LENGTH_LONG).show();
                 DaoWord.create(word);
                 // 更新选词表
-                WordSelectTable wst = new WordSelectTable();
-                wst.setLexiconID(ParentLexiconID);
-                Word temp = DaoWord.queryForEq("SPELLING", word.getSpelling()).get(0);
-                if(temp == null){
-                    Toast.makeText(getApplicationContext(), "word is null", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                wst.setWordID(temp.getID());
-                DaoSelectTable.create(wst);
+                //WordSelectTable wst = new WordSelectTable();
+                //wst.setLexiconID(ParentLexiconID);
+                //Word temp = DaoWord.queryForEq("SPELLING", word.getSpelling()).get(0);
+                //if(temp == null){
+                  //  Toast.makeText(getApplicationContext(), "word is null", Toast.LENGTH_LONG).show();
+                    //return;
+                //}
+                //wst.setWordID(temp.getID());
+                //DaoSelectTable.create(wst);
             }
             Toast.makeText(getApplicationContext(), "添加成功!", Toast.LENGTH_LONG).show();
             finish();

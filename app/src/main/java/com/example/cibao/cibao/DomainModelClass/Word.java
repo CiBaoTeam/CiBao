@@ -16,7 +16,7 @@ public class Word {
      * @show 单词编号
      */
     @DatabaseField(generatedId = true, columnName = "WORD_ID")
-    int ID;
+    protected int ID;
 
     public void setID(int ID) {
         this.ID = ID;
@@ -30,21 +30,21 @@ public class Word {
      * 单词本身
      */
     @DatabaseField(index = true, columnName = "SPELLING", unique = true)
-    String Spelling;
+    protected String Spelling;
     public void setSpelling(String Spelling){this.Spelling = Spelling;}
     public String getSpelling(){return Spelling;}
     /**
      * @show 中文意思
      */
     @DatabaseField(columnName = "MEANING")
-    String Meaning;
+    protected String Meaning;
     public void setMeaning(String Meaning){this.Meaning = Meaning;}
     public String getMeaning(){return Meaning;}
     /**
      * @show 发音
      */
     @DatabaseField(columnName = "PRONUNCIATION")
-    String Pronunciation;
+    protected String Pronunciation;
     public void setPronunciation(String Pronunciation){this.Pronunciation = Pronunciation;}
     public String getPronunciation(){return Pronunciation;}
 
@@ -52,7 +52,7 @@ public class Word {
      * @show 音标
      */
     @DatabaseField(columnName = "PHONETIC_SYMBOL")
-    String PhoneticSymbol;
+    protected String PhoneticSymbol;
     public void setPhoneticSymbol(String PhoneticSymbol){this.PhoneticSymbol = PhoneticSymbol;}
     public String getPhoneticSymbol(){return PhoneticSymbol;}
 
@@ -60,7 +60,7 @@ public class Word {
      * @show 以BASE64编码保存的图片
      */
     @DatabaseField(columnName = "PICTURE_OF_WORD")
-    String PictureOfWord;
+    protected String PictureOfWord;
     public void setPictureOfWord(String PictureOfWord){this.PictureOfWord = PictureOfWord;}
     public String getPictureOfWord(){return PictureOfWord;}
 
@@ -68,7 +68,7 @@ public class Word {
      * @show 所属用户
      */
     @DatabaseField(columnName = "USER_ID")
-    String UserID;
+    protected String UserID;
     public void setUserID(String UserID){this.UserID = UserID;}
     public String getUserID(){return UserID;}
 
