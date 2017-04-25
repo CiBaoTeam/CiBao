@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,7 +70,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
     /**
      * @show 选词数据库助手
      */
-    DBHelper WordSelectHelper;
+    //DBHelper WordSelectHelper;
     /**
      * @show 单词刀
      */
@@ -77,7 +78,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
     /**
      * @show 选词表刀
      */
-    Dao<WordSelectTable, Integer> DaoSelectTable;
+    //Dao<WordSelectTable, Integer> DaoSelectTable;
     /**
      * @show 父词库编号
      */
@@ -115,6 +116,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
                 Log.e("onDestroy()", sqlE.toString());
             }
         }
+        /*
         if(WordSelectHelper != null) {
             WordSelectHelper.close();
             try{
@@ -123,6 +125,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
                 Log.e("onDestroy()", sqlE.toString());
             }
         }
+        */
     }
 
     /**
@@ -151,10 +154,10 @@ public class ActivityLexiconTable extends AppCompatActivity {
      */
     void initializeDatabases(){
         WordHelper = new DBHelper(this, Word.class);
-        WordSelectHelper = new DBHelper(this, WordSelectTable.class);
+        //WordSelectHelper = new DBHelper(this, WordSelectTable.class);
         try{
             DaoWord = WordHelper.createDao(Word.class);
-            DaoSelectTable = WordSelectHelper.createDao(WordSelectTable.class);
+            //DaoSelectTable = WordSelectHelper.createDao(WordSelectTable.class);
         }catch (SQLException sqlE){
             Log.e("initializeDatabases()", sqlE.toString());
         }
@@ -175,30 +178,27 @@ public class ActivityLexiconTable extends AppCompatActivity {
         // 从数据库中获取单词
         ListItems = new ArrayList<>();
         // 用词库ID筛选
+        /*
         if(DaoSelectTable == null || DaoWord == null){
             Toast.makeText(this, "数据库初始化失败!", Toast.LENGTH_LONG).show();
             return;
         }
+        */
         List<WordSelectTable> WordSelectList = null;
         List<Word> WordList = null;// 词库包含的单词的ID
+        /*
         try{
             WordSelectList = DaoSelectTable.queryForEq("LEXICON_ID", ParentLexiconID);
         }catch (SQLException sqlE){
             Log.e(" initializeListItems()", sqlE.toString());
         }
-        if(WordSelectList == null){
-            Toast.makeText(this, "选词表为空!", Toast.LENGTH_LONG).show();
-            return;
-        }
+        */
         // 初始化单词列表
         WordList = new LinkedList<>();
         try{
-            for (WordSelectTable wst:
-                    WordSelectList) {
-                WordList.add(DaoWord.queryForEq("WORD_ID", wst.getWordID()).get(0));
-            }
+            WordList = DaoWord.queryForAll();
         }catch (SQLException sqlE){
-            Log.e(" initializeListItems()", sqlE.toString());
+            Log.e("initializeListItems()", sqlE.toString());
         }
         if(WordList == null)return;
         // 单词表，添加单词项
@@ -206,8 +206,8 @@ public class ActivityLexiconTable extends AppCompatActivity {
             HashMap<String, Object> ItemMap = new HashMap<>();
             ItemMap.put(LAYOUT_KEY_SPELLING, word.getSpelling());
             ItemMap.put(LAYOUT_KEY_MEANING, word.getMeaning());
-            //ItemMap.put(LAYOUT_KEY_IMAGE, BitmapHelper.BitmapMatrix.resizeImage(Base64Helper.getBitmapFromBase64Code(word.getPictureOfWord()),
-                    //BitmapHelper.BitmapMatrix.BitmapSize, BitmapHelper.BitmapMatrix.BitmapSize));
+            ItemMap.put(LAYOUT_KEY_IMAGE, BitmapHelper.BitmapMatrix.resizeImage(Base64Helper.getBitmapFromBase64Code(word.getPictureOfWord()),
+                    BitmapHelper.BitmapMatrix.BitmapSize, BitmapHelper.BitmapMatrix.BitmapSize));
             ListItems.add(ItemMap);
         }
     }
@@ -215,6 +215,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
      * @show 初始化列表适配器
      */
     void initializeListAdapter(){
+        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
         initializeListItem();
         if(ListItems == null)return;
         ListAdapter = new SimpleAdapter(this, ListItems, R.layout.layout_word_item,
@@ -236,51 +237,9 @@ public class ActivityLexiconTable extends AppCompatActivity {
         });
 
     }
-    /**
-     * @show 创建选项菜单
-     * @param menu 菜单
-     * @return 是否创建成功
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        super.onCreateOptionsMenu(menu);
-        setIconEnable(menu, true);
-        menu.add(0, MENU_ITEM_0, 0, "添加单词").setIcon(android.R.drawable.ic_menu_add);
-        // menu.add(0, MENU_ITEM_1, 0, "删除").setIcon(android.R.drawable.ic_menu_delete);
-        return true;
-    }
 
-    /**
-     * @show 设置菜单图标可显示性
-     * @param menu 菜单
-     * @param enable 是否可显示
-     */
-    private void setIconEnable(Menu menu, boolean enable){
-        try{
-            Class<?> clazz = Class.forName("com.android.internal.view.menu.MenuBuilder");
-            Method m = clazz.getDeclaredMethod("setOptionalIconsVisible", boolean.class);
-            m.setAccessible(true);
 
-            //MenuBuilder实现Menu接口，创建菜单时，传进来的menu其实就是MenuBuilder对象(java的多态特征)
-            m.invoke(menu, enable);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    /**
-     * @show 菜单项点击事件
-     * @param item 菜单项
-     * @return
-     */
-    public boolean onOptionsItemSelected(MenuItem item){
-        super.onOptionsItemSelected(item);
-        switch (item.getItemId()){
-            case MENU_ITEM_0:
-                navigateToEditWord(0, false);
-                break;
-        }
-        return true;
-    }
+
     /**
      * @show 跳转至编辑单词活动
      */
@@ -294,14 +253,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
                 Log.e("onDestroy()", sqlE.toString());
             }
         }
-        if(WordSelectHelper != null) {
-            WordSelectHelper.close();
-            try{
-                if(DaoSelectTable != null)DaoSelectTable.closeLastIterator();
-            }catch (SQLException sqlE){
-                Log.e("onDestroy()", sqlE.toString());
-            }
-        }
+
         Intent intent = new Intent(this, ActivityAddWordToLexicon.class);
         // 发送当前词库
         intent.putExtra(DBHelper.TABLE_LEXICON, ParentLexiconID);

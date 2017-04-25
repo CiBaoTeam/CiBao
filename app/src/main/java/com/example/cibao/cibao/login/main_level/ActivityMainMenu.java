@@ -14,6 +14,7 @@ import com.example.cibao.cibao.Helpers.DBHelper;
 import com.example.cibao.cibao.R;
 import com.example.cibao.cibao.login.main_level.function_my_lexicon.ActivityMyLexicon;
 import com.example.cibao.cibao.login.main_level.function_my_lexicon.sub_function.ActivityAddWordToLexicon;
+import com.example.cibao.cibao.login.main_level.function_my_lexicon.sub_function.ActivityLexiconTable;
 
 /**
  * 屈彬
@@ -27,6 +28,7 @@ public class ActivityMainMenu extends AppCompatActivity {
      */
     protected Button Button_BlockMyLexicon;
     protected Button Button_Music;
+    protected Button Button_Movie;
     /**
      * @show 按钮点击事件监听器
      */
@@ -61,6 +63,16 @@ public class ActivityMainMenu extends AppCompatActivity {
                 intent.putExtra(ActivityAddWordToLexicon.EDIT_STATUS, false);
                 // 发送选中的单词ID
                 intent.putExtra(DBHelper.TABLE_WORD, 0);
+                startActivity(intent);
+            }
+        });
+        Button_Movie = (Button) findViewById(R.id.MainMenu_Button_Block_Movie);
+        Button_Movie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), ActivityLexiconTable.class);
+
                 startActivity(intent);
             }
         });
