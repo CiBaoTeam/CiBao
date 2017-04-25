@@ -254,7 +254,7 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
         }catch (SQLException sqlE){
             //Toast.makeText(getApplicationContext(), "单词创建失败!", Toast.LENGTH_LONG).show();
             Toast.makeText(getApplicationContext(), sqlE.toString(), Toast.LENGTH_LONG).show();
-            EditText_PhoneticSymbol.setText(sqlE.toString());
+            //EditText_PhoneticSymbol.setText(sqlE.toString());
             Log.e("confirm()", sqlE.toString());
         }
     }
