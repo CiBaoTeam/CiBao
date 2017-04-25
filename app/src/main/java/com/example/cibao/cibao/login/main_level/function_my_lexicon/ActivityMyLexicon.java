@@ -240,6 +240,14 @@ public class ActivityMyLexicon extends AppCompatActivity {
      * @param lexiconPosition 词库在列表中的位置
      */
     void forwardToLexiconTableActivity(int lexiconPosition){
+        if(MainDBHelper != null)MainDBHelper.close();
+        if(DaoLexicon != null){
+            try{
+                DaoLexicon.closeLastIterator();
+            }catch (SQLException sqlE){
+                Log.e("onDestroy()", sqlE.toString());
+            }
+        }
         Intent LexiconTableIntent = new Intent();
         LexiconTableIntent.setClass(getApplicationContext(), ActivityLexiconTable.class);
         // 传送选中的词表名

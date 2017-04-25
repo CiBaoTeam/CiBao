@@ -285,6 +285,23 @@ public class ActivityLexiconTable extends AppCompatActivity {
      * @show 跳转至编辑单词活动
      */
     void navigateToEditWord(int wordID, boolean isEditMode){
+        // shut down database
+        if(WordHelper != null) {
+            WordHelper.close();
+            try{
+                if(DaoWord != null)DaoWord.closeLastIterator();
+            }catch (SQLException sqlE){
+                Log.e("onDestroy()", sqlE.toString());
+            }
+        }
+        if(WordSelectHelper != null) {
+            WordSelectHelper.close();
+            try{
+                if(DaoSelectTable != null)DaoSelectTable.closeLastIterator();
+            }catch (SQLException sqlE){
+                Log.e("onDestroy()", sqlE.toString());
+            }
+        }
         Intent intent = new Intent(this, ActivityAddWordToLexicon.class);
         // 发送当前词库
         intent.putExtra(DBHelper.TABLE_LEXICON, ParentLexiconID);

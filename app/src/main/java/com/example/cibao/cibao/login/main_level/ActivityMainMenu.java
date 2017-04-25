@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.example.cibao.cibao.Helpers.DBHelper;
 import com.example.cibao.cibao.R;
 import com.example.cibao.cibao.login.main_level.function_my_lexicon.ActivityMyLexicon;
+import com.example.cibao.cibao.login.main_level.function_my_lexicon.sub_function.ActivityAddWordToLexicon;
 
 /**
  * 屈彬
@@ -24,6 +26,7 @@ public class ActivityMainMenu extends AppCompatActivity {
      * @show “我的词库”按钮
      */
     protected Button Button_BlockMyLexicon;
+    protected Button Button_Music;
     /**
      * @show 按钮点击事件监听器
      */
@@ -45,6 +48,22 @@ public class ActivityMainMenu extends AppCompatActivity {
 
         Button_BlockMyLexicon = (Button)findViewById(R.id.MainMenu_Button_Block_MyLexicon);
         Button_BlockMyLexicon.setOnClickListener(BlockButtonListener_ClickListen);
+
+        Button_Music = (Button) findViewById(R.id.MainMenu_Button_Block_Music);
+        Button_Music.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), ActivityAddWordToLexicon.class);
+                // 发送当前词库
+                intent.putExtra(DBHelper.TABLE_LEXICON, 0);
+                // 是否为编辑状态
+                intent.putExtra(ActivityAddWordToLexicon.EDIT_STATUS, false);
+                // 发送选中的单词ID
+                intent.putExtra(DBHelper.TABLE_WORD, 0);
+                startActivity(intent);
+            }
+        });
     }
 
     /**

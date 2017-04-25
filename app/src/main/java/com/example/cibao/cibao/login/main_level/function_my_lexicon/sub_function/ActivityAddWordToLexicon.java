@@ -212,11 +212,12 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "单词不能为空!", Toast.LENGTH_LONG).show();
             return;
         }
-        Word word = new Word();
+        Word word = new Word(1);
         word.setSpelling(spelling);
         word.setMeaning(EditText_Meaning.getText().toString());
-        //word.setPhoneticSymbol(EditText_PhoneticSymbol.getText().toString());
-       // word.setPronunciation("");
+        word.setPhoneticSymbol(EditText_PhoneticSymbol.getText().toString());
+        word.setPronunciation("a");
+        word.setUserID("1");
         Bitmap bitmap;
         if(WordImage != null){
             bitmap = WordImage;
@@ -225,7 +226,7 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
             bitmap = BitmapHelper.BitmapMatrix.resizeImage(bitmap, BitmapHelper.BitmapMatrix.BitmapSize, BitmapHelper.BitmapMatrix.BitmapSize);
         }
         WordImageSerial = Base64Helper.getBase64CodeFromBitmap(bitmap);
-        //word.setPictureOfWord(WordImageSerial);
+        word.setPictureOfWord(WordImageSerial);
         // 保存到数据库
         if(DaoWord == null || DaoSelectTable == null){
             Toast.makeText(getApplicationContext(), "数据库访问失败!", Toast.LENGTH_LONG).show();
@@ -234,7 +235,7 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
         try{
             if(isEditMode){
                 Toast.makeText(getApplicationContext(), "editmode", Toast.LENGTH_LONG).show();
-                //word.setID(WordID);
+                word.setID(WordID);
                 DaoWord.update(word);
 
             }else {
