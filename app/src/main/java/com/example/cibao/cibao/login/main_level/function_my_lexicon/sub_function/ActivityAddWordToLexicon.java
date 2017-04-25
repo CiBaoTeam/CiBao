@@ -1,17 +1,23 @@
 package com.example.cibao.cibao.login.main_level.function_my_lexicon.sub_function;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cibao.cibao.DomainModelClass.Lexicon;
 import com.example.cibao.cibao.DomainModelClass.Word;
 import com.example.cibao.cibao.DomainModelClass.WordSelectTable;
 import com.example.cibao.cibao.Helpers.Base64Helper;
@@ -212,12 +218,10 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "单词不能为空!", Toast.LENGTH_LONG).show();
             return;
         }
-        Word word = new Word(1);
+        Word word = new Word();
         word.setSpelling(spelling);
         word.setMeaning(EditText_Meaning.getText().toString());
         word.setPhoneticSymbol(EditText_PhoneticSymbol.getText().toString());
-        word.setPronunciation("a");
-        word.setUserID("1");
         Bitmap bitmap;
         if(WordImage != null){
             bitmap = WordImage;
@@ -234,23 +238,14 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
         }
         try{
             if(isEditMode){
-                Toast.makeText(getApplicationContext(), "editmode", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "editmode", Toast.LENGTH_LONG).show();
                 word.setID(WordID);
                 DaoWord.update(word);
 
             }else {
-                Toast.makeText(getApplicationContext(), "create mode", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "create mode", Toast.LENGTH_LONG).show();
                 DaoWord.create(word);
-                // 更新选词表
-                //WordSelectTable wst = new WordSelectTable();
-                //wst.setLexiconID(ParentLexiconID);
-                //Word temp = DaoWord.queryForEq("SPELLING", word.getSpelling()).get(0);
-                //if(temp == null){
-                  //  Toast.makeText(getApplicationContext(), "word is null", Toast.LENGTH_LONG).show();
-                    //return;
-                //}
-                //wst.setWordID(temp.getID());
-                //DaoSelectTable.create(wst);
+
             }
             Toast.makeText(getApplicationContext(), "添加成功!", Toast.LENGTH_LONG).show();
             finish();
@@ -299,4 +294,6 @@ public class ActivityAddWordToLexicon extends AppCompatActivity {
             }
         }
     }
+
+
 }

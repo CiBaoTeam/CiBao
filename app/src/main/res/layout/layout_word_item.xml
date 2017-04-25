@@ -37,15 +37,5 @@
             android:layout_toRightOf="@+id/LexiconTable_word_item_imageView_image"
             android:layout_toEndOf="@+id/LexiconTable_word_item_imageView_image" />
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="不记得了"
-            android:id="@+id/button_forget"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
     </RelativeLayout>
 </LinearLayout>

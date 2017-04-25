@@ -1,8 +1,10 @@
 package com.example.cibao.cibao.login.main_level.function_my_lexicon.sub_function;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,12 +12,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.cibao.cibao.DomainModelClass.Lexicon;
 import com.example.cibao.cibao.DomainModelClass.Word;
 import com.example.cibao.cibao.DomainModelClass.WordSelectTable;
 import com.example.cibao.cibao.Helpers.Base64Helper;
@@ -95,6 +100,11 @@ public class ActivityLexiconTable extends AppCompatActivity {
      * @show 布局键-图片
      */
     final String LAYOUT_KEY_IMAGE="IMAGE";
+    /**
+     * @show 初始化单词列表
+      */
+
+    List<Word> WordList = new LinkedList<Word>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +179,46 @@ public class ActivityLexiconTable extends AppCompatActivity {
         if(ListItems != null)ListItems.clear();
         initializeListAdapter();
         ListViewMain.setAdapter(ListAdapter);
+        ListViewMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                createMemDialog(position);
+            }
+        });
+        ListViewMain.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
+                if(WordList == null)return false;
+                if(WordList.isEmpty())return false;
+                final Word word = WordList.get(position);
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle(word.getSpelling())
+                        .setIcon(android.R.drawable.ic_menu_edit)
+                        .setItems(new String[]{"删除单词"}, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Toast.makeText(getApplicationContext(), "" + which, Toast.LENGTH_SHORT).show();
+                                switch (which){
+                                    case 0:
+                                        new AlertDialog.Builder(view.getContext())
+                                                .setTitle("确认删除吗?")
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .setNegativeButton("取消", null)
+                                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        deleteLexicon(word);
+                                                    }
+                                                })
+                                                .show();
+                                        break;
+                                }
+                            }
+                        })
+                        .show();
+                return true;
+            }
+        });
     }
 
     /**
@@ -184,8 +234,8 @@ public class ActivityLexiconTable extends AppCompatActivity {
             return;
         }
         */
-        List<WordSelectTable> WordSelectList = null;
-        List<Word> WordList = null;// 词库包含的单词的ID
+        //List<WordSelectTable> WordSelectList = null;
+        //List<Word> WordList = null;// 词库包含的单词的ID
         /*
         try{
             WordSelectList = DaoSelectTable.queryForEq("LEXICON_ID", ParentLexiconID);
@@ -193,8 +243,7 @@ public class ActivityLexiconTable extends AppCompatActivity {
             Log.e(" initializeListItems()", sqlE.toString());
         }
         */
-        // 初始化单词列表
-        WordList = new LinkedList<>();
+
         try{
             WordList = DaoWord.queryForAll();
         }catch (SQLException sqlE){
@@ -205,7 +254,8 @@ public class ActivityLexiconTable extends AppCompatActivity {
         for(Word word : WordList){
             HashMap<String, Object> ItemMap = new HashMap<>();
             ItemMap.put(LAYOUT_KEY_SPELLING, word.getSpelling());
-            ItemMap.put(LAYOUT_KEY_MEANING, word.getMeaning());
+            // ItemMap.put(LAYOUT_KEY_MEANING, word.getMeaning());
+            ItemMap.put(LAYOUT_KEY_MEANING, "");
             ItemMap.put(LAYOUT_KEY_IMAGE, BitmapHelper.BitmapMatrix.resizeImage(Base64Helper.getBitmapFromBase64Code(word.getPictureOfWord()),
                     BitmapHelper.BitmapMatrix.BitmapSize, BitmapHelper.BitmapMatrix.BitmapSize));
             ListItems.add(ItemMap);
@@ -262,5 +312,71 @@ public class ActivityLexiconTable extends AppCompatActivity {
         // 发送选中的单词ID
         intent.putExtra(DBHelper.TABLE_WORD, wordID);
         this.startActivity(intent);
+    }
+    /**
+     * @show 弹出确认记忆对话框
+     */
+    protected void createMemDialog(int index){
+        if(WordList == null)return;
+        if(WordList.isEmpty())return;
+        //Toast.makeText(getApplicationContext(), index+"",Toast.LENGTH_LONG).show();
+        Word word = WordList.get(index);
+        try {
+            LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
+            final View dialogLayout = layoutInflater.inflate(R.layout.layout_word_memory, null);
+            final ImageView WordImageView = (ImageView) dialogLayout.findViewById(R.id.mem_imageView_word);
+            final TextView WordSpelling = (TextView) dialogLayout.findViewById(R.id.mem_textView_spelling);
+            final TextView WordSymbol = (TextView) dialogLayout.findViewById(R.id.mem_textView_symbol);
+            final TextView WordMeaning = (TextView) dialogLayout.findViewById(R.id.mem_textView_meaning);
+            final Button WordForget = (Button) dialogLayout.findViewById(R.id.mem_button_forget);
+            WordImageView.setImageBitmap(BitmapHelper.BitmapMatrix.resizeImage(Base64Helper.getBitmapFromBase64Code(word.getPictureOfWord()),
+                    BitmapHelper.BitmapMatrix.BitmapSize, BitmapHelper.BitmapMatrix.BitmapSize));
+            WordSpelling.setText(word.getSpelling());
+            WordSymbol.setText(word.getPhoneticSymbol());
+            WordMeaning.setText(word.getMeaning());
+            WordMeaning.setVisibility(View.INVISIBLE);
+
+            WordForget.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WordMeaning.setVisibility(View.VISIBLE);
+                }
+            });
+            new AlertDialog.Builder(this)
+                    .setTitle("单词记忆")
+                    .setView(dialogLayout)
+                    .setNegativeButton("认识", null)
+                    .show();
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * @show 创建编辑单词对话框
+     */
+    protected void createEditWordDialog(int index){
+        if(WordList == null)return;
+        if(WordList.isEmpty())return;
+
+    }
+    /**
+     * @show 删除单词
+     * @param word 单词
+     */
+    void deleteLexicon(Word word){
+        if(word == null)return;
+        if(DaoWord == null){
+            Toast.makeText(this, "数据库访问失败!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        try{
+            DaoWord.delete(word);
+            Toast.makeText(this, "删除成功!", Toast.LENGTH_LONG).show();
+        }catch (SQLException sqlE){
+            Log.e("createNewLexicon()", sqlE.toString());
+        }
+        // 刷新界面
+        refreshList(null);
     }
 }
